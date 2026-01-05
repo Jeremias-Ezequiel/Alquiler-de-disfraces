@@ -9,12 +9,16 @@ class Usuario
     private $contra;
     private $direccion;
     private $tel;
-    # Realizar foreign key con rol
+    private $rol;
+
+    const ROL_ADMIN = 1;
+    const ROL_CLIENTE = 2;
 
     public function __construct($data = [])
     {
 
         if (!empty($data)) {
+            echo "Hola";
             $this->hydrate($data);
         }
     }
@@ -30,6 +34,17 @@ class Usuario
                 $this->$method($value);
             }
         }
+    }
+
+    public function getRol()
+    {
+        return $this->rol;
+    }
+
+    public function setRol($rol)
+    {
+        $this->rol = $rol;
+        return $this;
     }
 
     public function getIdUsuario()
@@ -50,7 +65,7 @@ class Usuario
 
     public function setNombre($nombre): self
     {
-        $this->nombre = trim($nombre);
+        $this->nombre = trim(ucfirst(strtolower($nombre)));
 
         return $this;
     }
@@ -62,7 +77,7 @@ class Usuario
 
     public function setApellido($apellido): self
     {
-        $this->apellido = trim($apellido);
+        $this->apellido = trim(ucfirst(strtolower($apellido)));
 
         return $this;
     }
@@ -75,7 +90,7 @@ class Usuario
 
     public function setNombreUsuario($nombreUsuario): self
     {
-        $this->nombreUsuario = trim($nombreUsuario);
+        $this->nombreUsuario = trim(strtolower($nombreUsuario));
 
         return $this;
     }
@@ -176,5 +191,15 @@ class Usuario
         }
 
         return $errores;
+    }
+
+    public function esAdmin()
+    {
+        return $this->rol === self::ROL_ADMIN;
+    }
+
+    public function esCliente()
+    {
+        return $this->rol === self::ROL_CLIENTE;
     }
 }
